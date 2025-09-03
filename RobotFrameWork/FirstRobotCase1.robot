@@ -10,7 +10,7 @@ Resource  resource.robot
 
 *** Test Cases ***
 Validate Successful Login
-    Fill The Login Page     ${User_name}   ${valid_Password}
+    Fill The Login Page     ${User_name}   ${valid_Passwor}
     Check we are in the home page
     check oncotwin word
 
