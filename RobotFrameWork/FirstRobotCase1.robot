@@ -10,21 +10,23 @@ Resource  resource.robot
 
 *** Test Cases ***
 Validate Successful Login
-    Fill The Login Page     ${User_name}   ${valid_Passwor}
+    Fill The Login Page     ${user_name}    ${valid_Password}
     Check we are in the home page
     check oncotwin word
 
 *** Keywords ***
 
 Fill The Login Page
-    [arguments]     ${username}     ${password}
+    [arguments]     ${Username}        ${validPassword}
     Input Text      xpath://input[@id="email"]     ${username}
-    Input Password  xpath://input[@id="pwd"]       ${password}
+    Input Password  xpath://input[@id="pwd"]       ${validPassword}
     Click Button    xpath://button[normalize-space()="Log In"]
-    #Sleep    5s
+    Sleep    10s
 
 Check we are in the home page
-    Wait Until Element Is Visible   ${search_twin_button}
+    #Wait Until Element Is Visible   ${search_twin_button}
+    Wait Until Page Contains Element   ${Page_name}   20s
+    Wait Until Element Is Visible      ${search_twin_button}   20s
 
 check oncotwin word
     ${Logo}=  Get Text  ${Page_name}
