@@ -9,26 +9,34 @@ Resource  resource.robot
 #you can find the data in resource file
 
 *** Test Cases ***
-Validate Successful Login
+Validate Successful LoginWith valid Password
     Fill The Login Page     ${user_name}    ${valid_Password}
     Check we are in the home page
-    check oncotwin word
+    check page name
+
+Validate Unsuccessful Login With Invalid Password
+    Fill The Login Page     ${User_name}    ${invalid_password}
+    Check Invalid Login Message
 
 *** Keywords ***
 
 Fill The Login Page
-    [arguments]     ${Username}        ${validPassword}
+    [arguments]     ${Username}        ${Password}
     Input Text      xpath://input[@id="email"]     ${username}
-    Input Password  xpath://input[@id="pwd"]       ${validPassword}
+    Input Password  xpath://input[@id="pwd"]       ${Password}
     Click Button    xpath://button[normalize-space()="Log In"]
-    Sleep    10s
+    #Sleep    5s
 
 Check we are in the home page
-    #Wait Until Element Is Visible   ${search_twin_button}
     Wait Until Page Contains Element   ${Page_name}   20s
-    Wait Until Element Is Visible      ${search_twin_button}   20s
+    Wait Until Element Is Visible      ${Onco_twin_button}   20s
 
-check oncotwin word
+check Page name
     ${Logo}=  Get Text  ${Page_name}
     Should Be Equal As Strings  ${Logo}  Patient List
     Element Text Should Be  ${Page_name}  Patient List
+
+Check Invalid Login Message
+    Wait Until Element Is Visible    ${error_message}    5s
+    ${msg}=  Get Text  ${error_message}
+    Should Contain  ${msg}  please enter correct password
