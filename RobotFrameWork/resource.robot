@@ -10,6 +10,8 @@ ${User_name}    demo-user@oncotwin
 ${valid_Password}     Oncotwin@123
 ${invalid_password}     Oncotwin@456
 ${error_message}    css:div[role='alertdialog']
+${page_headers}     css:.header-content
+${page_titles}      css:.column-title
 
 *** Keywords ***
 Open The oncotwin web application

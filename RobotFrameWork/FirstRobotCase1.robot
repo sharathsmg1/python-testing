@@ -4,6 +4,7 @@ Library          SeleniumLibrary
 Test Setup  Open The oncotwin web application
 Test Teardown   Close browser session
 Resource  resource.robot
+Library    Collections
 
 *** Variables ***
 #you can find the data in resource file
@@ -38,19 +39,31 @@ check Page name
     Element Text Should Be  ${Page_name}  Patient List
 
 Check the column names
-    @{page_headers}    Create List    Cancer Site    4bc Reg. Date    Age    Gender    Histopathologies    Survival Status
-    ${expected_page_headers}    Get WebElements    css:.header-content
-    FOR    ${element}    IN    @{expected_page_headers}
+    # Expected Page Headers
+    @{expected_page_headers}    Create List    Cancer Site    4bc Reg. Date    Age    Gender    Histopathologies    Survival Status
+    ${actual_page_headers}    Get WebElements    css:.header-content
+    @{actual_headers}=    Create List
+    FOR    ${element}    IN    @{actual_page_headers}
         ${text}=    Get Text    ${element}
-        Log    ${text}
+        Append To List    ${actual_headers}    ${text}
     END
+    Lists Should Be Equal    ${expected_page_headers}    ${actual_headers}
 
-    @{page_titles}    Create List    Patient ID    Patient Name
-    ${expected_page_titles}    Get WebElements    css:.column-title
-    FOR    ${element}    IN    @{expected_page_titles}
+    # Expected Page Titles
+    @{expected_page_titles}    Create List    Patient ID    Patient Name
+    ${actual_page_titles}    Get WebElements    ${page_titles}
+    @{actual_titles}=    Create List
+    FOR    ${element}    IN    @{actual_page_titles}
         ${text}=    Get Text    ${element}
-        Log    ${text}
+        Append To List    ${actual_titles}    ${text}
     END
+    Lists Should Be Equal    ${expected_page_titles}    ${actual_titles}
+
+    # without for loop
+    #@{expected_page_titles}    Create List    Patient ID    Patient Name
+    #@{actual_page_titles}    Get Texts    css:.column-title
+    #Lists Should Be Equal    ${expected_page_titles}    ${actual_page_titles}
+
 
 Check Invalid Login Message
     Wait Until Element Is Visible    ${error_message}    5s
