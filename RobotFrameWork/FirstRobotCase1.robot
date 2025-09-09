@@ -11,8 +11,9 @@ Resource  resource.robot
 *** Test Cases ***
 Validate Successful LoginWith valid Password
     Fill The Login Page     ${user_name}    ${valid_Password}
-    Check we are in the home page
+    Check onco twin button
     check page name
+    Check the column names
 
 Validate Unsuccessful Login With Invalid Password
     Fill The Login Page     ${User_name}    ${invalid_password}
@@ -27,7 +28,7 @@ Fill The Login Page
     Click Button    xpath://button[normalize-space()="Log In"]
     #Sleep    5s
 
-Check we are in the home page
+Check onco twin button
     Wait Until Page Contains Element   ${Page_name}   20s
     Wait Until Element Is Visible      ${Onco_twin_button}   20s
 
@@ -35,6 +36,21 @@ check Page name
     ${Logo}=  Get Text  ${Page_name}
     Should Be Equal As Strings  ${Logo}  Patient List
     Element Text Should Be  ${Page_name}  Patient List
+
+Check the column names
+    @{page_headers}    Create List    Cancer Site    4bc Reg. Date    Age    Gender    Histopathologies    Survival Status
+    ${expected_page_headers}    Get WebElements    css:.header-content
+    FOR    ${element}    IN    @{expected_page_headers}
+        ${text}=    Get Text    ${element}
+        Log    ${text}
+    END
+
+    @{page_titles}    Create List    Patient ID    Patient Name
+    ${expected_page_titles}    Get WebElements    css:.column-title
+    FOR    ${element}    IN    @{expected_page_titles}
+        ${text}=    Get Text    ${element}
+        Log    ${text}
+    END
 
 Check Invalid Login Message
     Wait Until Element Is Visible    ${error_message}    5s
